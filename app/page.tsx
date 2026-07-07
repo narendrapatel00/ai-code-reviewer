@@ -40,7 +40,7 @@ export default function LandingPage() {
             <div className="flex flex-col items-center space-y-8">
               <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4">
                 <span className="flex h-2 w-2 rounded-full bg-primary mr-2"></span>
-                GPT-4 Powered Analysis
+                Llama 3 / Groq Powered Analysis
               </div>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60 drop-shadow-sm max-w-4xl">
                 Ship better code, <br className="hidden md:block"/>

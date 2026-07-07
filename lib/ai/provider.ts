@@ -39,15 +39,16 @@ export interface AIReviewResponse {
 }
 
 export async function analyzeCode(code: string, language: string, customPrompt?: string, userApiKey?: string): Promise<AIReviewResponse> {
-  const apiKey = userApiKey || process.env.OPENAI_API_KEY;
+  const apiKey = userApiKey || process.env.GROQ_API_KEY;
 
-  if (!apiKey || apiKey === 'placeholder_openai_api_key') {
+  if (!apiKey || apiKey === 'placeholder_openai_api_key' || apiKey === 'placeholder_groq_api_key') {
     // Return mock data for development if key is missing/placeholder
     return generateMockResponse(language, customPrompt);
   }
 
   const openai = new OpenAI({
     apiKey: apiKey,
+    baseURL: 'https://api.groq.com/openai/v1',
   });
 
   const prompt = `
@@ -73,23 +74,55 @@ Code to review:
 ${code}
 `;
 
+  const models = [
+    'llama-3.3-70b-versatile',
+    'llama-3.1-70b-versatile',
+    'llama-3.1-8b-instant',
+  ];
+
+  let lastError: any = null;
+
+  for (const model of models) {
+    try {
+      const response = await openai.chat.completions.create({
+        model: model,
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.2,
+        response_format: { type: 'json_object' }
+      });
+
+      const content = response.choices[0]?.message?.content;
+      if (!content) throw new Error('No content returned from AI');
+
+      return parseJSONResponse(content) as AIReviewResponse;
+    } catch (error) {
+      console.warn(`Groq Model ${model} failed, attempting fallback if available. Error:`, error);
+      lastError = error;
+    }
+  }
+
+  console.error('All Groq models failed. Last error:', lastError);
+  throw new Error('Failed to analyze code with AI Provider: ' + (lastError?.message || lastError));
+}
+
+function parseJSONResponse(rawContent: string): any {
+  let cleaned = rawContent.trim();
+  
+  // Remove markdown code fences if returned
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\n?/i, '');
+    cleaned = cleaned.replace(/\n?```$/, '');
+    cleaned = cleaned.trim();
+  }
+  
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4-turbo', // or whatever latest model is preferred
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.2,
-      response_format: { type: 'json_object' }
-    });
-
-    const content = response.choices[0]?.message?.content;
-    if (!content) throw new Error('No content returned from AI');
-
-    return JSON.parse(content) as AIReviewResponse;
-  } catch (error) {
-    console.error('AI Review Error:', error);
-    throw new Error('Failed to analyze code with AI Provider');
+    return JSON.parse(cleaned);
+  } catch {
+    console.error('Failed to parse JSON response. Raw content:', rawContent);
+    throw new Error('Invalid JSON format returned from AI model');
   }
 }
+
 
 function generateMockResponse(language: string, customPrompt?: string): AIReviewResponse {
   const isGoogle = customPrompt?.toLowerCase().includes('google') || false;

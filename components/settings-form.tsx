@@ -78,11 +78,11 @@ export function SettingsForm({ email, initialName, hasApiKey }: SettingsFormProp
         <CardContent>
           <form onSubmit={handleSaveApiKey} className="space-y-4">
             <div className="grid gap-2">
-              <Label htmlFor="openai_key">OpenAI API Key</Label>
+              <Label htmlFor="openai_key">Groq API Key</Label>
               <Input 
                 id="openai_key" 
                 type="password" 
-                placeholder={hasApiKey ? '••••••••••••••••••••' : 'sk-...'} 
+                placeholder={hasApiKey ? '••••••••••••••••••••' : 'gsk-...'} 
                 value={apiKey} 
                 onChange={e => setApiKey(e.target.value)} 
                 required 

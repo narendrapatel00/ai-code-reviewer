@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     // Enforce 50 review limit for default backend keys (Hobby Plan BYOK limit)
     if (callCount >= 50 && !userApiKey) {
       return NextResponse.json({ 
-        error: 'Hobby Plan rate limit reached (50 reviews). To continue analyzing code, please bring your own OpenAI API Key in settings.' 
+        error: 'Hobby Plan rate limit reached (50 reviews). To continue analyzing code, please bring your own Groq API Key in settings.' 
       }, { status: 429 });
     }
 
