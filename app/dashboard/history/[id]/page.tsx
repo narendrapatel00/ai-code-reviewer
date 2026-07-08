@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { CodeDiffViewer } from '@/components/code-diff-viewer'
 import { ExportButtons } from '@/components/export-buttons'
 import { FavoriteButton } from '@/components/favorite-button'
+import { AIChatPanel } from '@/components/ai-chat-panel'
+import { ComplexityAnalyzer } from '@/components/complexity-analyzer'
 import { ArrowLeft, FileCode, CheckCircle, Info } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -79,6 +81,7 @@ export default async function ReviewResultPage({ params }: { params: Promise<{ i
         <div className="flex items-center gap-2">
           <FavoriteButton reviewId={review.id} initialIsFavorite={isFavorite} />
           <ExportButtons review={review} findings={allFindings} />
+          <AIChatPanel code={improvedCode} language={language} />
         </div>
       </div>
 
@@ -106,16 +109,21 @@ export default async function ReviewResultPage({ params }: { params: Promise<{ i
       </div>
 
       <Tabs defaultValue="compare" className="w-full mt-8">
-        <TabsList className="grid w-full grid-cols-5 bg-muted/50 p-1">
+        <TabsList className="grid w-full grid-cols-6 bg-muted/50 p-1">
           <TabsTrigger value="compare">Compare Code</TabsTrigger>
-          <TabsTrigger value="bugs">Bugs & Logic ({bugs.length})</TabsTrigger>
+          <TabsTrigger value="bugs">Bugs ({bugs.length})</TabsTrigger>
           <TabsTrigger value="security">Security ({security.length})</TabsTrigger>
           <TabsTrigger value="performance">Performance ({performance.length})</TabsTrigger>
-          <TabsTrigger value="quality">Quality & Style ({quality.length})</TabsTrigger>
+          <TabsTrigger value="quality">Quality ({quality.length})</TabsTrigger>
+          <TabsTrigger value="complexity">Complexity</TabsTrigger>
         </TabsList>
 
         <TabsContent value="compare" className="mt-6">
           <CodeDiffViewer original={originalCode} modified={improvedCode} language={language} />
+        </TabsContent>
+
+        <TabsContent value="complexity" className="mt-6">
+          <ComplexityAnalyzer code={originalCode} language={language} />
         </TabsContent>
 
         <TabsContent value="bugs" className="mt-6 space-y-4">
