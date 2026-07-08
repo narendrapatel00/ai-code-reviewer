@@ -1,7 +1,7 @@
-import { Bell, Search } from 'lucide-react'
+import { Bell } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { MobileNav } from '@/components/mobile-nav'
+import { CommandPalette } from '@/components/command-palette'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,14 +24,7 @@ export async function Navbar() {
     <header className="flex h-16 items-center gap-4 border-b border-border/50 bg-background/50 px-6 backdrop-blur-md">
       <MobileNav />
       <div className="flex flex-1 items-center gap-4">
-        <div className="relative w-full max-w-sm">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search reviews... (Ctrl+K)"
-            className="w-full bg-background shadow-none appearance-none pl-8 md:w-2/3 lg:w-full rounded-full"
-          />
-        </div>
+        <CommandPalette />
       </div>
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" className="rounded-full">
