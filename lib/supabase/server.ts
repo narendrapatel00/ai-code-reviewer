@@ -3,14 +3,15 @@ import { cookies } from 'next/headers'
 import { createMockSupabaseClient } from './demo-db-server'
 
 export async function createClient() {
-  const isDemo = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
+  const cookieStore = await cookies()
+  const hasDemoCookie = cookieStore.has('sb-demo-user')
+  const isDemo = hasDemoCookie || !process.env.NEXT_PUBLIC_SUPABASE_URL || 
     process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder-project-id');
 
   if (isDemo) {
     return createMockSupabaseClient() as any;
   }
 
-  const cookieStore = await cookies()
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

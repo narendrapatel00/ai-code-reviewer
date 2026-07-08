@@ -6,11 +6,11 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
-  const isDemo = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
+  const hasDemoCookie = request.cookies.has('sb-demo-user');
+  const isDemo = hasDemoCookie || !process.env.NEXT_PUBLIC_SUPABASE_URL || 
     process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder-project-id');
 
   if (isDemo) {
-    const hasDemoCookie = request.cookies.has('sb-demo-user');
     const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard') ||
       request.nextUrl.pathname.startsWith('/new-review') ||
       request.nextUrl.pathname.startsWith('/history') ||
