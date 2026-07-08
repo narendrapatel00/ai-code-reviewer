@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileCode2, History, Library, Settings, LogOut } from 'lucide-react'
+import { LayoutDashboard, FileCode2, History, Library, Settings, LogOut, GitCompare } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 const routes = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'New Review', path: '/dashboard/new-review', icon: FileCode2 },
+  { name: 'Compare Versions', path: '/dashboard/compare', icon: GitCompare },
   { name: 'History', path: '/dashboard/history', icon: History },
   { name: 'Saved Prompts', path: '/dashboard/prompts', icon: Library },
   { name: 'Settings', path: '/dashboard/settings', icon: Settings },

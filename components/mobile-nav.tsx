@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, FileCode2, LayoutDashboard, History, Library, Settings, LogOut } from 'lucide-react'
+import { Menu, FileCode2, LayoutDashboard, History, Library, Settings, LogOut, GitCompare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { usePathname, useRouter } from 'next/navigation'
@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/client'
 const routes = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'New Review', path: '/dashboard/new-review', icon: FileCode2 },
+  { name: 'Compare Versions', path: '/dashboard/compare', icon: GitCompare },
   { name: 'History', path: '/dashboard/history', icon: History },
   { name: 'Saved Prompts', path: '/dashboard/prompts', icon: Library },
   { name: 'Settings', path: '/dashboard/settings', icon: Settings },
