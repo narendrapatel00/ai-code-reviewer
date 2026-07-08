@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,6 +11,7 @@ import { continueInDemoMode } from './demo-login-action'
 import { toast } from 'sonner'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [isDemoLoading, setIsDemoLoading] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
@@ -23,11 +25,20 @@ export default function LoginPage() {
     try {
       if (isLogin) {
         const result = await login(formData)
-        if (result?.error) toast.error(result.error)
+        if (result?.error) {
+          toast.error(result.error)
+        } else if (result?.success) {
+          toast.success('Signed in successfully!')
+          router.push('/dashboard')
+        }
       } else {
         const result = await signup(formData)
-        if (result?.error) toast.error(result.error)
-        else toast.success('Check your email for the confirmation link.')
+        if (result?.error) {
+          toast.error(result.error)
+        } else if (result?.success) {
+          toast.success('Account created successfully! Directing to dashboard...')
+          router.push('/dashboard')
+        }
       }
     } catch {
       toast.error('An unexpected error occurred')
@@ -39,7 +50,11 @@ export default function LoginPage() {
   async function handleDemoMode() {
     setIsDemoLoading(true)
     try {
-      await continueInDemoMode()
+      const result = await continueInDemoMode()
+      if (result?.success) {
+        toast.success('Entering Demo Mode...')
+        router.push('/dashboard')
+      }
     } catch {
       toast.error('Failed to enter Demo Mode')
       setIsDemoLoading(false)

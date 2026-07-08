@@ -15,7 +15,7 @@ export async function continueInDemoMode() {
     sameSite: 'lax',
   })
   
-  redirect('/dashboard')
+  return { success: true }
 }
 
 export async function signOutDemoMode() {
