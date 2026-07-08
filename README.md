@@ -1,49 +1,73 @@
-# AI Code Reviewer
+# AI Code Reviewer – Intelligent Code Analysis Platform
 
-🚀 **Live Deployment:** [https://ai-code-reviewer-mfno.vercel.app](https://ai-code-reviewer-mfno.vercel.app/)
+🚀 **Live Deployment:** [https://ai-code-reviewer-mfno.vercel.app](https://ai-code-reviewer-mfno.vercel.app)
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+An intelligent, full-stack AI-powered code analysis platform designed for modern developers. Paste code, upload files, or trigger comparisons to get detailed feedback on security, performance, clean code best practices, and maintainability.
 
+---
 
-## Getting Started
+## 🌟 Core Features
 
-First, run the development server:
+- **AI Code Review Pipeline**: Automatic scan of code scripts for bug detection, security vulnerabilities, performance hot spots, readability, and design pattern improvements.
+- **Interactive Code Compare**: Side-by-side Monaco Diff Editor comparing file versions with structural AI diff analysis highlighting changes, improvements, and regressions.
+- **Contextual AI Chat Panel**: Sidebar chat drawer equipped with quick shortcuts (*Explain Code*, *Generate Unit Tests*, *Document Code*, *Convert Language*) to discuss refactoring actions.
+- **Complexity & Dependency Visualizer**:
+  - Computes **Cyclomatic Complexity** (decision structures) and **Cognitive Load** (indent depths).
+  - Renders a interactive SVG **import dependency graph** showing linkages between modules.
+- **Global Command Palette**: Fuzzy-search routing overlay triggered via `Ctrl+K` / `Cmd+K` for instant page navigation and theme toggling.
+- **Demo Mode Sandbox**: Full cookie-based session database bypass allowing instant trial access with fully functional mock data storage and AI engine hooks.
+- **SaaS Export & Reporting**: Download analysis reports directly to PDF, Markdown, or JSON.
 
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling & UI**: Tailwind CSS, shadcn/ui, Framer Motion
+- **Code Inputs**: Monaco Editor (with `DiffEditor` support)
+- **Database & Auth**: Supabase PostgreSQL + Supabase Auth
+- **AI Model Engine**: Groq Cloud API (Llama 3 / Mixtral) / OpenAI BYOK API
+
+---
+
+## ⚙️ Local Development
+
+### 1. Environment Setup
+Clone the repository and duplicate `.env.example` as `.env.local`:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Configure your credentials:
+```env
+# Optional Supabase variables (leaving blank defaults to Demo Sandbox Mode)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# AI Provider Credentials
+GROQ_API_KEY=your-groq-api-key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-## Learn More
+### 3. Run Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Configuration & Deployment
-
-### Environment Variables
-To run the AI reviews, rename `.env.example` to `.env.local` and configure your API keys:
-* `GROQ_API_KEY`: Your Groq Cloud API key.
-* `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase Project URL.
-* `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous public key.
-* `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key.
-* `NEXT_PUBLIC_SITE_URL`: Your local or hosted site URL (e.g. `http://localhost:3000`).
-
-### Deploy on Vercel
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js. Configure the environment variables above in your Vercel project settings.
-
+### Deploying to Vercel
+1. Link your repository in the Vercel Dashboard.
+2. In the Environment Variables configuration, add:
+   - `GROQ_API_KEY`
+   - `NEXT_PUBLIC_SITE_URL` (your production domain)
+3. Build & Deploy. (If your host environment experiences SWC node binding issues, the Next configuration will fall back to the Webpack bundler automatically).
